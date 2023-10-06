@@ -18,7 +18,7 @@ def test_create_group_fail_if_group_already_exists(mocker):
     responses.add(
         responses.GET,
         f"{URL}/api/security/groups/{NEW_GROUP.name}",
-        json=NEW_GROUP.dict(),
+        json=NEW_GROUP.model_dump(),
         status=200,
     )
 
@@ -38,13 +38,13 @@ def test_create_group_success(mocker):
     responses.add(
         responses.PUT,
         f"{URL}/api/security/groups/{NEW_GROUP.name}",
-        json=NEW_GROUP.dict(),
+        json=NEW_GROUP.model_dump(),
         status=201,
     )
     responses.add(
         responses.GET,
         f"{URL}/api/security/groups/{NEW_GROUP.name}",
-        json=NEW_GROUP.dict(),
+        json=NEW_GROUP.model_dump(),
         status=200,
     )
 
@@ -54,7 +54,7 @@ def test_create_group_success(mocker):
 
     artifactory_group.get.assert_called_with(NEW_GROUP.name)
     assert artifactory_group.get.call_count == 2
-    assert group == NEW_GROUP.dict()
+    assert group.model_dump() == NEW_GROUP.model_dump()
 
 
 @responses.activate
@@ -73,7 +73,7 @@ def test_get_group_success(mocker):
     responses.add(
         responses.GET,
         f"{URL}/api/security/groups/{NEW_GROUP.name}?includeUsers=True",
-        json=GROUP_WITH_USERS.dict(),
+        json=GROUP_WITH_USERS.model_dump(),
         status=200,
     )
 
@@ -81,13 +81,16 @@ def test_get_group_success(mocker):
     mocker.spy(artifactory_group, "get")
     group = artifactory_group.get(NEW_GROUP.name)
 
-    assert group.dict() == GROUP_WITH_USERS.dict()
+    assert group.model_dump() == GROUP_WITH_USERS.model_dump()
 
 
 @responses.activate
 def test_list_group_success(mocker):
     responses.add(
-        responses.GET, f"{URL}/api/security/groups", json=[NEW_GROUP.dict()], status=200
+        responses.GET,
+        f"{URL}/api/security/groups",
+        json=[NEW_GROUP.model_dump()],
+        status=200,
     )
 
     artifactory_group = ArtifactoryGroup(AuthModel(url=URL, auth=AUTH))
@@ -116,14 +119,14 @@ def test_update_group_success(mocker):
     responses.add(
         responses.GET,
         f"{URL}/api/security/groups/{NEW_GROUP.name}",
-        json=NEW_GROUP.dict(),
+        json=NEW_GROUP.model_dump(),
         status=200,
     )
 
     responses.add(
         responses.POST,
         f"{URL}/api/security/groups/{NEW_GROUP.name}",
-        json=NEW_GROUP.dict(),
+        json=NEW_GROUP.model_dump(),
         status=200,
     )
     artifactory_group = ArtifactoryGroup(AuthModel(url=URL, auth=AUTH))
@@ -154,7 +157,7 @@ def test_delete_group_success(mocker):
     responses.add(
         responses.GET,
         f"{URL}/api/security/groups/{NEW_GROUP.name}",
-        json=NEW_GROUP.dict(),
+        json=NEW_GROUP.model_dump(),
         status=200,
     )
 

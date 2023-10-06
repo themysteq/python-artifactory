@@ -2,6 +2,7 @@
 Import all models here.
 """
 from typing import Union, Type
+from pydantic import TypeAdapter
 
 from .auth import AuthModel, ApiKeyModel, PasswordModel, AccessTokenModel
 from .group import Group, SimpleGroup

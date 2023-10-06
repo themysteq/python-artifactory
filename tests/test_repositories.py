@@ -65,7 +65,7 @@ def test_create_local_repository_using_create_repo_fail_if_repository_already_ex
     responses.add(
         responses.GET,
         f"{URL}/api/repositories/{LOCAL_REPOSITORY.key}",
-        json=LOCAL_REPOSITORY_RESPONSE.dict(),
+        json=LOCAL_REPOSITORY_RESPONSE.model_dump(),
         status=200,
     )
 
@@ -82,7 +82,7 @@ def test_create_local_repository_fail_if_repository_already_exists(mocker):
     responses.add(
         responses.GET,
         f"{URL}/api/repositories/{LOCAL_REPOSITORY.key}",
-        json=LOCAL_REPOSITORY_RESPONSE.dict(),
+        json=LOCAL_REPOSITORY_RESPONSE.model_dump(),
         status=200,
     )
 
@@ -101,7 +101,7 @@ def test_create_virtual_repository_using_create_repo_fail_if_repository_already_
     responses.add(
         responses.GET,
         f"{URL}/api/repositories/{VIRTUAL_REPOSITORY.key}",
-        json=VIRTUAL_REPOSITORY_RESPONSE.dict(),
+        json=VIRTUAL_REPOSITORY_RESPONSE.model_dump(),
         status=200,
     )
 
@@ -118,7 +118,7 @@ def test_create_virtual_repository_fail_if_repository_already_exists(mocker):
     responses.add(
         responses.GET,
         f"{URL}/api/repositories/{VIRTUAL_REPOSITORY.key}",
-        json=VIRTUAL_REPOSITORY_RESPONSE.dict(),
+        json=VIRTUAL_REPOSITORY_RESPONSE.model_dump(),
         status=200,
     )
 
@@ -137,7 +137,7 @@ def test_create_remote_repository_using_create_repo_fail_if_repository_already_e
     responses.add(
         responses.GET,
         f"{URL}/api/repositories/{REMOTE_REPOSITORY.key}",
-        json=REMOTE_REPOSITORY_RESPONSE.dict(),
+        json=REMOTE_REPOSITORY_RESPONSE.model_dump(),
         status=200,
     )
 
@@ -154,7 +154,7 @@ def test_create_remote_repository_fail_if_repository_already_exists(mocker):
     responses.add(
         responses.GET,
         f"{URL}/api/repositories/{REMOTE_REPOSITORY.key}",
-        json=REMOTE_REPOSITORY_RESPONSE.dict(),
+        json=REMOTE_REPOSITORY_RESPONSE.model_dump(),
         status=200,
     )
 
@@ -174,13 +174,13 @@ def test_create_local_repository_using_create_repo_success(mocker):
     responses.add(
         responses.PUT,
         f"{URL}/api/repositories/{LOCAL_REPOSITORY.key}",
-        json=LOCAL_REPOSITORY_RESPONSE.dict(),
+        json=LOCAL_REPOSITORY_RESPONSE.model_dump(),
         status=201,
     )
     responses.add(
         responses.GET,
         f"{URL}/api/repositories/{LOCAL_REPOSITORY.key}",
-        json=LOCAL_REPOSITORY_RESPONSE.dict(),
+        json=LOCAL_REPOSITORY_RESPONSE.model_dump(),
         status=200,
     )
 
@@ -200,13 +200,13 @@ def test_create_local_repository_success(mocker):
     responses.add(
         responses.PUT,
         f"{URL}/api/repositories/{LOCAL_REPOSITORY.key}",
-        json=LOCAL_REPOSITORY_RESPONSE.dict(),
+        json=LOCAL_REPOSITORY_RESPONSE.model_dump(),
         status=201,
     )
     responses.add(
         responses.GET,
         f"{URL}/api/repositories/{LOCAL_REPOSITORY.key}",
-        json=LOCAL_REPOSITORY_RESPONSE.dict(),
+        json=LOCAL_REPOSITORY_RESPONSE.model_dump(),
         status=200,
     )
 
@@ -227,13 +227,13 @@ def test_create_virtual_repository_using_create_repo_success(mocker):
     responses.add(
         responses.PUT,
         f"{URL}/api/repositories/{VIRTUAL_REPOSITORY.key}",
-        json=VIRTUAL_REPOSITORY_RESPONSE.dict(),
+        json=VIRTUAL_REPOSITORY_RESPONSE.model_dump(),
         status=201,
     )
     responses.add(
         responses.GET,
         f"{URL}/api/repositories/{VIRTUAL_REPOSITORY.key}",
-        json=VIRTUAL_REPOSITORY_RESPONSE.dict(),
+        json=VIRTUAL_REPOSITORY_RESPONSE.model_dump(),
         status=200,
     )
 
@@ -252,13 +252,13 @@ def test_create_virtual_repository_success(mocker):
     responses.add(
         responses.PUT,
         f"{URL}/api/repositories/{VIRTUAL_REPOSITORY.key}",
-        json=VIRTUAL_REPOSITORY_RESPONSE.dict(),
+        json=VIRTUAL_REPOSITORY_RESPONSE.model_dump(),
         status=201,
     )
     responses.add(
         responses.GET,
         f"{URL}/api/repositories/{VIRTUAL_REPOSITORY.key}",
-        json=VIRTUAL_REPOSITORY_RESPONSE.dict(),
+        json=VIRTUAL_REPOSITORY_RESPONSE.model_dump(),
         status=200,
     )
 
@@ -268,7 +268,7 @@ def test_create_virtual_repository_success(mocker):
 
     artifactory_repo.get_virtual_repo.assert_called_with(VIRTUAL_REPOSITORY.key)
     assert artifactory_repo.get_virtual_repo.call_count == 2
-    assert virtual_repo == VIRTUAL_REPOSITORY_RESPONSE.dict()
+    assert virtual_repo.model_dump() == VIRTUAL_REPOSITORY_RESPONSE.model_dump()
 
 
 @responses.activate
@@ -279,13 +279,13 @@ def test_create_remote_repository_using_create_repo_success(mocker):
     responses.add(
         responses.PUT,
         f"{URL}/api/repositories/{REMOTE_REPOSITORY.key}",
-        json=REMOTE_REPOSITORY_RESPONSE.dict(),
+        json=REMOTE_REPOSITORY_RESPONSE.model_dump(),
         status=201,
     )
     responses.add(
         responses.GET,
         f"{URL}/api/repositories/{REMOTE_REPOSITORY.key}",
-        json=REMOTE_REPOSITORY_RESPONSE.dict(),
+        json=REMOTE_REPOSITORY_RESPONSE.model_dump(),
         status=200,
     )
 
@@ -304,13 +304,13 @@ def test_create_remote_repository_success(mocker):
     responses.add(
         responses.PUT,
         f"{URL}/api/repositories/{REMOTE_REPOSITORY.key}",
-        json=REMOTE_REPOSITORY_RESPONSE.dict(),
+        json=REMOTE_REPOSITORY_RESPONSE.model_dump(),
         status=201,
     )
     responses.add(
         responses.GET,
         f"{URL}/api/repositories/{REMOTE_REPOSITORY.key}",
-        json=REMOTE_REPOSITORY_RESPONSE.dict(),
+        json=REMOTE_REPOSITORY_RESPONSE.model_dump(),
         status=200,
     )
 
@@ -373,7 +373,7 @@ def test_get_local_repository_using_get_repo_success():
     responses.add(
         responses.GET,
         f"{URL}/api/repositories/{LOCAL_REPOSITORY.key}",
-        json=LOCAL_REPOSITORY_RESPONSE.dict(),
+        json=LOCAL_REPOSITORY_RESPONSE.model_dump(),
         status=200,
     )
 
@@ -388,7 +388,7 @@ def test_get_local_repository_success(mocker):
     responses.add(
         responses.GET,
         f"{URL}/api/repositories/{LOCAL_REPOSITORY.key}",
-        json=LOCAL_REPOSITORY_RESPONSE.dict(),
+        json=LOCAL_REPOSITORY_RESPONSE.model_dump(),
         status=200,
     )
 
@@ -405,7 +405,7 @@ def test_get_virtual_repository_using_get_repo_success(mocker):
     responses.add(
         responses.GET,
         f"{URL}/api/repositories/{VIRTUAL_REPOSITORY.key}",
-        json=VIRTUAL_REPOSITORY_RESPONSE.dict(),
+        json=VIRTUAL_REPOSITORY_RESPONSE.model_dump(),
         status=200,
     )
 
@@ -420,7 +420,7 @@ def test_get_virtual_repository_success(mocker):
     responses.add(
         responses.GET,
         f"{URL}/api/repositories/{VIRTUAL_REPOSITORY.key}",
-        json=VIRTUAL_REPOSITORY_RESPONSE.dict(),
+        json=VIRTUAL_REPOSITORY_RESPONSE.model_dump(),
         status=200,
     )
 
@@ -437,7 +437,7 @@ def test_get_remote_repository_using_get_repo_success():
     responses.add(
         responses.GET,
         f"{URL}/api/repositories/{REMOTE_REPOSITORY.key}",
-        json=REMOTE_REPOSITORY_RESPONSE.dict(),
+        json=REMOTE_REPOSITORY_RESPONSE.model_dump(),
         status=200,
     )
 
@@ -452,7 +452,7 @@ def test_get_remote_repository_success(mocker):
     responses.add(
         responses.GET,
         f"{URL}/api/repositories/{REMOTE_REPOSITORY.key}",
-        json=REMOTE_REPOSITORY_RESPONSE.dict(),
+        json=REMOTE_REPOSITORY_RESPONSE.model_dump(),
         status=200,
     )
 
@@ -469,7 +469,7 @@ def test_list_repositories_success(mocker):
     responses.add(
         responses.GET,
         f"{URL}/api/repositories",
-        json=[SIMPLE_REPOSITORY.dict()],
+        json=[SIMPLE_REPOSITORY.model_dump()],
         status=200,
     )
 
@@ -568,7 +568,7 @@ def test_update_local_repository_using_update_repo_success(mocker):
     responses.add(
         responses.GET,
         f"{URL}/api/repositories/{UPDATED_LOCAL_REPOSITORY.key}",
-        json=UPDATED_LOCAL_REPOSITORY_RESPONSE.dict(),
+        json=UPDATED_LOCAL_REPOSITORY_RESPONSE.model_dump(),
         status=200,
     )
 
@@ -580,7 +580,7 @@ def test_update_local_repository_using_update_repo_success(mocker):
     responses.add(
         responses.GET,
         f"{URL}/api/repositories/{UPDATED_LOCAL_REPOSITORY.key}",
-        json=UPDATED_LOCAL_REPOSITORY_RESPONSE.dict(),
+        json=UPDATED_LOCAL_REPOSITORY_RESPONSE.model_dump(),
         status=200,
     )
     artifactory_repo = ArtifactoryRepository(AuthModel(url=URL, auth=AUTH))
@@ -596,14 +596,14 @@ def test_update_local_repository_success(mocker):
     responses.add(
         responses.GET,
         f"{URL}/api/repositories/{LOCAL_REPOSITORY.key}",
-        json=LOCAL_REPOSITORY_RESPONSE.dict(),
+        json=LOCAL_REPOSITORY_RESPONSE.model_dump(),
         status=200,
     )
 
     responses.add(
         responses.POST,
         f"{URL}/api/repositories/{LOCAL_REPOSITORY.key}",
-        json=LOCAL_REPOSITORY_RESPONSE.dict(),
+        json=LOCAL_REPOSITORY_RESPONSE.model_dump(),
         status=200,
     )
     artifactory_repo = ArtifactoryRepository(AuthModel(url=URL, auth=AUTH))
@@ -619,7 +619,7 @@ def test_update_virtual_repository_using_update_repo_success():
     responses.add(
         responses.GET,
         f"{URL}/api/repositories/{UPDATED_VIRTUAL_REPOSITORY.key}",
-        json=VIRTUAL_REPOSITORY_RESPONSE.dict(),
+        json=VIRTUAL_REPOSITORY_RESPONSE.model_dump(),
         status=200,
     )
 
@@ -631,7 +631,7 @@ def test_update_virtual_repository_using_update_repo_success():
     responses.add(
         responses.GET,
         f"{URL}/api/repositories/{UPDATED_VIRTUAL_REPOSITORY.key}",
-        json=UPDATED_VIRTUAL_REPOSITORY_RESPONSE.dict(),
+        json=UPDATED_VIRTUAL_REPOSITORY_RESPONSE.model_dump(),
         status=200,
     )
     artifactory_repo = ArtifactoryRepository(AuthModel(url=URL, auth=AUTH))
@@ -644,7 +644,7 @@ def test_update_virtual_repository_success(mocker):
     responses.add(
         responses.GET,
         f"{URL}/api/repositories/{VIRTUAL_REPOSITORY.key}",
-        json=VIRTUAL_REPOSITORY_RESPONSE.dict(),
+        json=VIRTUAL_REPOSITORY_RESPONSE.model_dump(),
         status=200,
     )
 
@@ -666,7 +666,7 @@ def test_update_remote_repository_using_update_repo_success():
     responses.add(
         responses.GET,
         f"{URL}/api/repositories/{UPDATED_REMOTE_REPOSITORY.key}",
-        json=UPDATED_REMOTE_REPOSITORY_RESPONSE.dict(),
+        json=UPDATED_REMOTE_REPOSITORY_RESPONSE.model_dump(),
         status=200,
     )
 
@@ -678,7 +678,7 @@ def test_update_remote_repository_using_update_repo_success():
     responses.add(
         responses.GET,
         f"{URL}/api/repositories/{UPDATED_REMOTE_REPOSITORY.key}",
-        json=UPDATED_REMOTE_REPOSITORY_RESPONSE.dict(),
+        json=UPDATED_REMOTE_REPOSITORY_RESPONSE.model_dump(),
         status=200,
     )
     artifactory_repo = ArtifactoryRepository(AuthModel(url=URL, auth=AUTH))
@@ -691,14 +691,14 @@ def test_update_remote_repository_success(mocker):
     responses.add(
         responses.GET,
         f"{URL}/api/repositories/{REMOTE_REPOSITORY.key}",
-        json=REMOTE_REPOSITORY_RESPONSE.dict(),
+        json=REMOTE_REPOSITORY_RESPONSE.model_dump(),
         status=200,
     )
 
     responses.add(
         responses.POST,
         f"{URL}/api/repositories/{REMOTE_REPOSITORY.key}",
-        json=REMOTE_REPOSITORY_RESPONSE.dict(),
+        json=REMOTE_REPOSITORY_RESPONSE.model_dump(),
         status=200,
     )
     artifactory_repo = ArtifactoryRepository(AuthModel(url=URL, auth=AUTH))

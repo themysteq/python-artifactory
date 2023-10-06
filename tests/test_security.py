@@ -14,7 +14,7 @@ API_KEY = ApiKeyModel(apiKey="test_api_key")
 
 @responses.activate
 def test_get_encrypted_password():
-    data = PASSWORD.dict()
+    data = PASSWORD.model_dump()
     data["password"] = PASSWORD.password.get_secret_value()
     responses.add(
         responses.GET, f"{URL}/api/security/encryptedPassword", json=data, status=200
@@ -27,7 +27,7 @@ def test_get_encrypted_password():
 
 @responses.activate
 def test_create_api_key():
-    data = API_KEY.dict()
+    data = API_KEY.model_dump()
     data["apiKey"] = API_KEY.apiKey.get_secret_value()
     responses.add(responses.POST, f"{URL}/api/security/apiKey", json=data, status=200)
 
@@ -38,7 +38,7 @@ def test_create_api_key():
 
 @responses.activate
 def test_regenerate_api_key():
-    data = API_KEY.dict()
+    data = API_KEY.model_dump()
     data["apiKey"] = API_KEY.apiKey.get_secret_value()
     responses.add(responses.PUT, f"{URL}/api/security/apiKey", json=data, status=200)
 
@@ -49,7 +49,7 @@ def test_regenerate_api_key():
 
 @responses.activate
 def test_get_api_key():
-    data = API_KEY.dict()
+    data = API_KEY.model_dump()
     data["apiKey"] = API_KEY.apiKey.get_secret_value()
     responses.add(responses.GET, f"{URL}/api/security/apiKey", json=data, status=200)
 
