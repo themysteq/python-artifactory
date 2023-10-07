@@ -7,7 +7,9 @@ from pyartifactory.models import AuthModel, NewUser, User, UserResponse, SimpleU
 
 URL = "http://localhost:8080/artifactory"
 AUTH = ("user", "password_or_apiKey")
-SIMPLE_USER = SimpleUser(name="test_user", uri="https://some.uri")
+SIMPLE_USER = SimpleUser(
+    name="test_user", uri="/access/api/v2/users/test_user", status="enabled"
+)
 USER = UserResponse(name="test_user", email="test.test@test.com")
 USER_TO_UPDATE = User(name="test_user", email="test.test2@test.com")
 NEW_USER = NewUser(name="test_user", password="test", email="test.test@test.com")
@@ -18,7 +20,7 @@ def test_create_user_fail_if_user_already_exists(mocker):
     responses.add(
         responses.GET,
         f"{URL}/api/security/users/{USER.name}",
-        json=USER.dict(),
+        json=USER.model_dump(),
         status=200,
     )
 
@@ -36,13 +38,13 @@ def test_create_user_success(mocker):
     responses.add(
         responses.PUT,
         f"{URL}/api/security/users/{USER.name}",
-        json=USER.dict(),
+        json=USER.model_dump(),
         status=201,
     )
     responses.add(
         responses.GET,
         f"{URL}/api/security/users/{USER.name}",
-        json=USER.dict(),
+        json=USER.model_dump(),
         status=200,
     )
 
@@ -52,7 +54,7 @@ def test_create_user_success(mocker):
 
     artifactory_user.get.assert_called_with(NEW_USER.name)
     assert artifactory_user.get.call_count == 2
-    assert user == USER.dict()
+    assert user.model_dump() == USER.model_dump()
 
 
 @responses.activate
@@ -69,7 +71,7 @@ def test_get_user_success(mocker):
     responses.add(
         responses.GET,
         f"{URL}/api/security/users/{USER.name}",
-        json=USER.dict(),
+        json=USER.model_dump(),
         status=200,
     )
 
@@ -85,7 +87,7 @@ def test_list_user_success(mocker):
     responses.add(
         responses.GET,
         f"{URL}/api/security/users",
-        json=[SIMPLE_USER.dict()],
+        json=[SIMPLE_USER.model_dump()],
         status=200,
     )
 
@@ -115,14 +117,14 @@ def test_update_user_success(mocker):
     responses.add(
         responses.GET,
         f"{URL}/api/security/users/{USER_TO_UPDATE.name}",
-        json=USER.dict(),
+        json=USER.model_dump(),
         status=200,
     )
 
     responses.add(
         responses.POST,
         f"{URL}/api/security/users/{USER_TO_UPDATE.name}",
-        json=USER.dict(),
+        json=USER.model_dump(),
         status=200,
     )
     artifactory_user = ArtifactoryUser(AuthModel(url=URL, auth=AUTH))
@@ -153,7 +155,7 @@ def test_delete_user_success(mocker):
     responses.add(
         responses.GET,
         f"{URL}/api/security/users/{NEW_USER.name}",
-        json=USER.dict(),
+        json=USER.model_dump(),
         status=200,
     )
 

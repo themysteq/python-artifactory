@@ -3,15 +3,20 @@ Definition of all user related models.
 """
 
 from datetime import datetime
-from typing import List, Optional
-from pydantic import BaseModel, EmailStr, SecretStr, HttpUrl
+from typing import List, Optional, Literal, Union
+from pathlib import Path
+from pydantic import BaseModel, EmailStr, SecretStr
 
 
 class SimpleUser(BaseModel):
-    """Models a simple user."""
+    """
+    Models a simple user.
+    https://jfrog.com/help/r/jfrog-rest-apis/get-user-list
+    """
 
     name: str
-    uri: HttpUrl
+    uri: Union[Path, str]
+    status: Literal["invited", "enabled", "disabled", "locked"]
     realm: Optional[str] = None
 
 

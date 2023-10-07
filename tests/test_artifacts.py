@@ -145,7 +145,7 @@ def test_get_artifact_folder_info_success():
     artifactory = ArtifactoryArtifact(AuthModel(url=URL, auth=AUTH))
     artifact = artifactory.info(ARTIFACT_REPO)
     assert isinstance(artifact, ArtifactFolderInfoResponse)
-    assert artifact.dict() == FOLDER_INFO.dict()
+    assert artifact.model_dump() == FOLDER_INFO.model_dump()
 
 
 @responses.activate
@@ -158,7 +158,7 @@ def test_get_artifact_file_info_success():
     )
     artifactory = ArtifactoryArtifact(AuthModel(url=URL, auth=AUTH))
     artifact = artifactory.info(ARTIFACT_PATH)
-    assert artifact.dict() == FILE_INFO.dict()
+    assert artifact.model_dump() == FILE_INFO.model_dump()
 
 
 @responses.activate
@@ -176,7 +176,7 @@ def test_deploy_artifact_success(mocker):
     artifact = artifactory.deploy(LOCAL_FILE_LOCATION, ARTIFACT_PATH)
 
     artifactory.info.assert_called_once_with(ARTIFACT_PATH)
-    assert artifact.dict() == FILE_INFO.dict()
+    assert artifact.model_dump() == FILE_INFO.model_dump()
 
 
 @responses.activate
@@ -254,13 +254,13 @@ def test_get_artifact_single_property_success():
     responses.add(
         responses.GET,
         f"{URL}/api/storage/{ARTIFACT_PATH}?properties=prop1",
-        json=ARTIFACT_ONE_PROPERTY.dict(),
+        json=ARTIFACT_ONE_PROPERTY.model_dump(),
         status=200,
     )
 
     artifactory = ArtifactoryArtifact(AuthModel(url=URL, auth=AUTH))
     artifact_properties = artifactory.properties(ARTIFACT_PATH, ["prop1"])
-    assert artifact_properties.dict() == ARTIFACT_ONE_PROPERTY.dict()
+    assert artifact_properties.model_dump() == ARTIFACT_ONE_PROPERTY.model_dump()
 
 
 @responses.activate
@@ -268,13 +268,13 @@ def test_get_artifact_multiple_properties_success():
     responses.add(
         responses.GET,
         f"{URL}/api/storage/{ARTIFACT_PATH}?properties=prop1,prop2",
-        json=ARTIFACT_MULTIPLE_PROPERTIES.dict(),
+        json=ARTIFACT_MULTIPLE_PROPERTIES.model_dump(),
         status=200,
     )
 
     artifactory = ArtifactoryArtifact(AuthModel(url=URL, auth=AUTH))
     artifact_properties = artifactory.properties(ARTIFACT_PATH, ["prop1", "prop2"])
-    assert artifact_properties.dict() == ARTIFACT_MULTIPLE_PROPERTIES.dict()
+    assert artifact_properties.model_dump() == ARTIFACT_MULTIPLE_PROPERTIES.model_dump()
 
 
 @responses.activate
@@ -282,7 +282,7 @@ def test_get_artifact_multiple_properties_with_non_existing_properties_success()
     responses.add(
         responses.GET,
         f"{URL}/api/storage/{ARTIFACT_PATH}?properties=prop1,prop2,non_existing_prop",
-        json=ARTIFACT_MULTIPLE_PROPERTIES.dict(),
+        json=ARTIFACT_MULTIPLE_PROPERTIES.model_dump(),
         status=200,
     )
 
@@ -290,7 +290,7 @@ def test_get_artifact_multiple_properties_with_non_existing_properties_success()
     artifact_properties = artifactory.properties(
         ARTIFACT_PATH, ["prop1", "prop2", "non_existing_prop"]
     )
-    assert artifact_properties.dict() == ARTIFACT_MULTIPLE_PROPERTIES.dict()
+    assert artifact_properties.model_dump() == ARTIFACT_MULTIPLE_PROPERTIES.model_dump()
 
 
 @responses.activate
@@ -298,13 +298,13 @@ def test_get_artifact_all_properties_success():
     responses.add(
         responses.GET,
         f"{URL}/api/storage/{ARTIFACT_PATH}?properties",
-        json=ARTIFACT_MULTIPLE_PROPERTIES.dict(),
+        json=ARTIFACT_MULTIPLE_PROPERTIES.model_dump(),
         status=200,
     )
 
     artifactory = ArtifactoryArtifact(AuthModel(url=URL, auth=AUTH))
     artifact_properties = artifactory.properties(ARTIFACT_PATH)
-    assert artifact_properties.dict() == ARTIFACT_MULTIPLE_PROPERTIES.dict()
+    assert artifact_properties.model_dump() == ARTIFACT_MULTIPLE_PROPERTIES.model_dump()
 
 
 @responses.activate
@@ -332,7 +332,7 @@ def test_get_list_of_artifacts():
 
     artifactory = ArtifactoryArtifact(AuthModel(url=URL, auth=AUTH))
     artifact_list = artifactory.list(ARTIFACT_REPO)
-    assert artifact_list.dict() == LIST_ARTIFACTS.dict()
+    assert artifact_list.model_dump() == LIST_ARTIFACTS.model_dump()
     assert len(artifact_list.files) == 3
     assert isinstance(artifact_list.files[0], ArtifactListFolderResponse)
     assert isinstance(artifact_list.files[1], ArtifactListFileResponse)
@@ -358,13 +358,13 @@ def test_get_artifact_stats_success():
     responses.add(
         responses.GET,
         f"{URL}/api/storage/{ARTIFACT_PATH}?stats",
-        json=ARTIFACT_STATS.dict(),
+        json=ARTIFACT_STATS.model_dump(),
         status=200,
     )
 
     artifactory = ArtifactoryArtifact(AuthModel(url=URL, auth=AUTH))
     artifact_stats = artifactory.stats(ARTIFACT_PATH)
-    assert artifact_stats.dict() == ARTIFACT_STATS.dict()
+    assert artifact_stats.model_dump() == ARTIFACT_STATS.model_dump()
 
 
 @responses.activate
@@ -383,7 +383,7 @@ def test_copy_artifact_success():
 
     artifactory = ArtifactoryArtifact(AuthModel(url=URL, auth=AUTH))
     artifact_copied = artifactory.copy(ARTIFACT_PATH, ARTIFACT_NEW_PATH)
-    assert artifact_copied.dict() == FILE_INFO.dict()
+    assert artifact_copied.model_dump() == FILE_INFO.model_dump()
 
 
 @responses.activate
@@ -402,7 +402,7 @@ def test_move_artifact_success():
 
     artifactory = ArtifactoryArtifact(AuthModel(url=URL, auth=AUTH))
     artifact_moved = artifactory.move(ARTIFACT_PATH, ARTIFACT_NEW_PATH)
-    assert artifact_moved.dict() == FILE_INFO.dict()
+    assert artifact_moved.model_dump() == FILE_INFO.model_dump()
 
 
 @responses.activate
@@ -427,7 +427,7 @@ def test_set_property_success():
     responses.add(
         responses.GET,
         f"{URL}/api/storage/{ARTIFACT_PATH}?properties=",
-        json=ARTIFACT_MULTIPLE_PROPERTIES.dict(),
+        json=ARTIFACT_MULTIPLE_PROPERTIES.model_dump(),
         status=200,
     )
     artifactory = ArtifactoryArtifact(AuthModel(url=URL, auth=AUTH))
@@ -489,7 +489,7 @@ def test_update_property_success():
     responses.add(
         responses.GET,
         f"{URL}/api/storage/{ARTIFACT_PATH}?properties=",
-        json=ARTIFACT_MULTIPLE_PROPERTIES.dict(),
+        json=ARTIFACT_MULTIPLE_PROPERTIES.model_dump(),
         status=200,
     )
     artifactory = ArtifactoryArtifact(AuthModel(url=URL, auth=AUTH))

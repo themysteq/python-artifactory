@@ -10,7 +10,7 @@ from pathlib import Path
 from typing import List, Optional, Dict, Tuple, Union, Iterator, overload
 
 import requests
-from pydantic import parse_obj_as
+from pydantic import parse_obj_as, TypeAdapter
 
 from pyartifactory.artifactory_object import ArtifactoryObject
 from pyartifactory.exception import (
@@ -74,7 +74,7 @@ class Artifactory:
         url: str,
         auth: Tuple[str, str],
         verify: bool = True,
-        cert: str = None,
+        cert: Optional[str] = None,
         api_version: int = 1,
     ):
         self.artifactory = AuthModel(
@@ -146,7 +146,7 @@ class ArtifactoryUser(ArtifactoryObject):
         self.get(username)
         self._post(
             f"api/{self._uri}/{username}",
-            json=user.dict(exclude={"lastLoggedIn", "realm"}),
+            json=user.model_dump(exclude={"lastLoggedIn", "realm"}),
         )
         logger.debug("User %s successfully updated", username)
         return self.get(username)
@@ -332,7 +332,9 @@ class ArtifactorySecurity(ArtifactoryObject):
             response.json().get("error_description", "Unknown error")
         )
 
-    def revoke_access_token(self, token: str = None, token_id: str = None) -> bool:
+    def revoke_access_token(
+        self, token: Optional[str] = None, token_id: Optional[str] = None
+    ) -> bool:
         """
         Revokes an access token.
 
@@ -840,7 +842,9 @@ class ArtifactoryArtifact(ArtifactoryObject):
                 logger.debug("Artifact %s successfully deployed", local_filename)
         return self.info(artifact_path)
 
-    def _download(self, artifact_path: str, local_directory_path: Path = None) -> Path:
+    def _download(
+        self, artifact_path: str, local_directory_path: Optional[Path] = None
+    ) -> Path:
         """
         Download artifact (file) into local directory.
         :param artifact_path: Path to file in Artifactory

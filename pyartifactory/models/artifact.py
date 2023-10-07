@@ -6,10 +6,7 @@ Definition of all artifact models.
 from datetime import datetime
 from typing import Optional, List, Dict, Union
 
-try:
-    from typing import Literal  # type: ignore
-except ImportError:
-    from typing_extensions import Literal
+from typing import Literal  # type: ignore
 
 from pydantic import BaseModel
 
@@ -109,7 +106,7 @@ class ArtifactStatsResponse(BaseModel):
     uri: str
     downloadCount: int
     lastDownloaded: int
-    lastDownloadedBy: Optional[str]
+    lastDownloadedBy: Optional[str] = None
     remoteDownloadCount: int
     remoteLastDownloaded: int
 

@@ -112,7 +112,7 @@ def test_create_permission_success(mocker, api_version, permission, api_uri):
     mocker.spy(artifactory_permission, "get")
     mocked_permission = artifactory_permission.create(permission)
     artifactory_permission.get.assert_called_with(permission.name)
-    assert mocked_permission == permission.dict()
+    assert mocked_permission.model_dump() == permission.model_dump()
 
     assert artifactory_permission.get.call_count == 2
 
@@ -152,7 +152,7 @@ def test_get_permission_success(mocker, api_version, permission, api_uri):
     mocked_permission = artifactory_permission.get(permission.name)
     artifactory_permission.get.assert_called_with(permission.name)
 
-    assert mocked_permission == permission.dict()
+    assert mocked_permission.model_dump() == permission.model_dump()
 
 
 @pytest.mark.parametrize("api_version,api_uri", [(1, API_URI), (2, API_URI_V2)])
@@ -171,7 +171,7 @@ def test_list_group_success(mocker, api_version, api_uri):
     mocker.spy(artifactory_permission, "list")
     permission_list = artifactory_permission.list()
     artifactory_permission.list.assert_called_once()
-    assert permission_list == [SIMPLE_PERMISSION.dict()]
+    assert permission_list == [SIMPLE_PERMISSION]
 
 
 @pytest.mark.parametrize(
